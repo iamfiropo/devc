@@ -2,6 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const Debug = require('debug');
 const chalk = require('chalk');
+const bodyParser = require('body-parser');
 
 const app = express();
 
@@ -10,8 +11,8 @@ const dummyData = require('./data');
 
 const port = process.env.PORT || 5000;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
   res.status(200).json({
@@ -20,7 +21,7 @@ app.get('/', (req, res) => {
   });
 })
 
-const data = JSON.stringify(dummyData);
+const data = JSON.stringify(dummyData, null, 2);
 app
   .get('/retrieve', (req, res) => {
     let rawData = fs.readFile('./data.json', (error, data) => {
